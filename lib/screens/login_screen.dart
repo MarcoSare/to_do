@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
+import 'package:to_do/widgets/email_field.dart';
+import 'package:to_do/widgets/pass_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +11,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  EmailField emailField = EmailField(
+      label: "Email", hint: "Email", msgError: "Email or password wrong");
+  PassField passField = PassField(
+      label: "Password", hint: "Password", msgError: "Email or password wrong");
+
   bool isShow = false;
   var controlerEmail;
   final btnGoogle = SocialLoginButton(
@@ -80,9 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 18,
                     ),
                   ),
-                  getTextEmail(50),
-                  getTextPass("Password", "Password", 50),
-
+                  emailField,
+                  passField,
                   /*SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -92,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text("Login"),
                     ),
                   ),*/
-
                   btnLogin,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,7 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Expanded(
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/register");
+                            },
                             child: const Text(
                               "Create your account",
                               style: TextStyle(color: Colors.purpleAccent),
@@ -124,135 +129,5 @@ class _LoginScreenState extends State<LoginScreen> {
                 ]),
           ),
         ));
-  }
-
-  Widget getTextField(
-      String hintText, String labelText, IconData icon, int lenght) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        inputFormatters: [LengthLimitingTextInputFormatter(lenght)],
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(20)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.purple),
-                borderRadius: BorderRadius.circular(20)),
-            prefixIcon: Container(
-              margin: const EdgeInsets.only(left: 14, right: 14),
-              child: Icon(
-                icon,
-                color: Colors.white,
-              ),
-            ),
-            hintStyle: const TextStyle(color: Colors.white),
-            labelStyle: const TextStyle(color: Colors.white),
-            hintText: hintText,
-            labelText: labelText),
-      ),
-    );
-  }
-
-  Widget getTextEmail(int lenght) {
-    return Form(
-        key: formkey,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            inputFormatters: [LengthLimitingTextInputFormatter(lenght)],
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.purple),
-                    borderRadius: BorderRadius.circular(20)),
-                errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(20)),
-                focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(20)),
-                prefixIcon: Container(
-                  margin: const EdgeInsets.only(left: 14, right: 14),
-                  child: const Icon(
-                    Icons.email,
-                    color: Colors.white,
-                  ),
-                ),
-                hintStyle: const TextStyle(color: Colors.white),
-                labelStyle: const TextStyle(color: Colors.white),
-                hintText: "Email",
-                labelText: "Email"),
-            onSaved: (value) {
-              controlerEmail = value;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Enter an email";
-              } else if (!EmailValidator.validate(value!)) {
-                return "Enter email valited";
-              }
-            },
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            onChanged: (value) {
-              setState(() {
-                controlerEmail = value;
-              });
-            },
-          ),
-        ));
-  }
-
-  /*
-  if (EmailValidator.validate(value!)) {
-            return "Enter email valited";
-          }
-  */
-
-  Widget getTextPass(String hintText, String labelText, int lenght) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        obscureText: !isShow,
-        inputFormatters: [LengthLimitingTextInputFormatter(lenght)],
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(20)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.purple),
-                borderRadius: BorderRadius.circular(20)),
-            prefixIcon: Container(
-              margin: const EdgeInsets.only(left: 14, right: 14),
-              child: const Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-            ),
-            suffixIcon: Container(
-              margin: const EdgeInsets.only(left: 14, right: 14),
-              child: IconButton(
-                icon: Icon(
-                  isShow ? Icons.visibility : Icons.visibility_off,
-                  color: isShow ? Colors.purple : Colors.white,
-                ),
-                onPressed: () {
-                  setState(() {
-                    isShow = !isShow;
-                  });
-                },
-              ),
-            ),
-            hintStyle: const TextStyle(color: Colors.white),
-            labelStyle: const TextStyle(color: Colors.white),
-            hintText: hintText,
-            labelText: labelText),
-      ),
-    );
   }
 }

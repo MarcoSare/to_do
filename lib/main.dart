@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/routes.dart';
 import 'package:to_do/screens/login_screen.dart';
 
 void main() {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
+        routes: getAplicationRoutes(),
         theme: ThemeData(
           fontFamily: "PopPins",
           // This is the theme of your application.
