@@ -16,6 +16,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  bool isLoading = false;
   ApiUser apiUser = ApiUser();
   TextFieldWidget firstName = TextFieldWidget(
     label: "First name",
@@ -52,24 +53,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return false;
   }
 
-  Future<void> registerUser() async {
-    final userModel = UserModel(
-      firstName: firstName.controlador,
-      lastName: lastName.controlador,
-      email: emailField.controlador,
-      password: passField.controlador,
-      gender: downListGender.control!,
-    );
-    bool flag = await apiUser.register(userModel);
-    if (flag) {
-      print("El usuario se inserto");
-    } else {
-      print("ocurrio un error inesperado");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    Future<bool?> alertInsert(String message) => showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+              backgroundColor: Colors.grey,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: Container(
+                child: Text(message),
+              ),
+            ));
+    Future<void> registerUser() async {
+      final userModel = UserModel(
+        firstName: firstName.controlador,
+        lastName: lastName.controlador,
+        email: emailField.controlador,
+        password: passField.controlador,
+        gender: downListGender.control!,
+      );
+      setState(() {
+        isLoading = true;
+      });
+      var response = await apiUser.register(userModel);
+      setState(() {
+        isLoading = false;
+      });
+      if (response["message"] == "El usuario se ha registrado correctamente") {
+        await alertInsert(response["message"]);
+      } else if (response["message"] ==
+          "This email has already been registered") {
+        emailField.error = true;
+        emailField.msgError = response["message"];
+        emailField.formkey.currentState!.validate();
+      } else {
+        print("Error inesperado");
+      }
+    }
+
     final btnRegister = Padding(
       padding: const EdgeInsets.all(8.0),
       child: SocialLoginButton(
@@ -91,36 +113,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
           padding: const EdgeInsets.all(20),
           width: double.infinity,
           child: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/images/logo.png",
-                    height: 100,
-                    width: 250,
-                    fit: BoxFit.cover,
-                  ),
-                  Image.asset(
-                    "assets/images/login_img.gif",
-                    height: 250,
-                    width: 250,
-                  ),
-                  const Text(
-                    "Create your account",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  firstName,
-                  lastName,
-                  emailField,
-                  passField,
-                  downListGender,
-                  btnRegister
-                ]),
+            child: Stack(
+              children: [
+                AbsorbPointer(
+                  absorbing: isLoading,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/logo.png",
+                          height: 100,
+                          width: 250,
+                          fit: BoxFit.cover,
+                        ),
+                        Image.asset(
+                          "assets/images/login_img.gif",
+                          height: 250,
+                          width: 250,
+                        ),
+                        const Text(
+                          "Create your account",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        firstName,
+                        lastName,
+                        emailField,
+                        passField,
+                        downListGender,
+                        btnRegister
+                      ]),
+                ),
+                isLoading
+                    ? Positioned.fill(
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(20),
+                              color: Colors.grey,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: const [
+                                  Text(
+                                    "Please wait",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  CircularProgressIndicator(
+                                    backgroundColor: Colors.black45,
+                                    color: Colors.purple,
+                                  ),
+                                ],
+                              ),
+                            )))
+                    : const SizedBox(),
+              ],
+            ),
           ),
         ));
   }
