@@ -1,7 +1,10 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:to_do/models/user_model.dart';
 import 'package:to_do/network/api_user.dart';
+import 'package:to_do/widgets/dialog_widget.dart';
 import 'package:to_do/widgets/down_list_gender.dart';
 import 'package:to_do/widgets/email_field.dart';
 import 'package:to_do/widgets/pass_field.dart';
@@ -55,16 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool?> alertInsert(String message) => showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-              backgroundColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              content: Container(
-                child: Text(message),
-              ),
-            ));
+    DialogWidget dialogWidget = DialogWidget(context: context);
     Future<void> registerUser() async {
       final userModel = UserModel(
         firstName: firstName.controlador,
@@ -73,23 +67,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: passField.controlador,
         gender: downListGender.control!,
       );
-      setState(() {
-        isLoading = true;
-      });
+      dialogWidget.showProgress();
       var response = await apiUser.register(userModel);
-      setState(() {
-        isLoading = false;
-      });
-      if (response["message"] == "El usuario se ha registrado correctamente") {
-        await alertInsert(response["message"]);
-      } else if (response["message"] ==
-          "This email has already been registered") {
-        emailField.error = true;
-        emailField.msgError = response["message"];
-        emailField.formkey.currentState!.validate();
+      dialogWidget.closeProgress();
+
+      if (!response.containsKey("Error")) {
+        dialogWidget.showSuccesDialog(
+            "Succesful register", "Se ha enviado un correo de confirmación");
       } else {
-        print("Error inesperado");
+        if (response["Error"] == "This email has already been registered") {
+          emailField.error = true;
+          emailField.msgError = response["Error"];
+          emailField.formkey.currentState!.validate();
+        } else if (response["Error"] == "Tiempo de espera agotado") {
+          dialogWidget.showErrorDialog("Tiempo de espera agotado",
+              "Verifica tu conexión e intenta más tarde");
+        } else {
+          dialogWidget.showErrorDialog(
+              "Error inesperado", "Verifica tu conexión e intenta más tarde");
+        }
       }
+    }
+
+    Future<void> prueba() async {
+      dialogWidget.showProgress();
+      await Future.delayed(const Duration(milliseconds: 5000));
+      dialogWidget.closeProgress();
+      // ignore: use_build_context_synchronously
+      dialogWidget.showSuccesDialog(
+          "Succesful register", "Se ha enviado un correo de confirmación");
     }
 
     final btnRegister = Padding(
