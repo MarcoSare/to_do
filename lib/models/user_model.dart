@@ -8,6 +8,7 @@ class UserModel {
   String? gender;
   bool? isAdmin;
   String? profilePicture;
+  String? token;
 
   UserModel(
       {this.id,
@@ -18,5 +19,17 @@ class UserModel {
       this.password,
       this.gender,
       this.isAdmin,
-      this.profilePicture});
+      this.profilePicture,
+      this.token});
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+        id: map["id"],
+        firstName: map["first_name"],
+        lastName: map["last_name"],
+        email: map["email"],
+        profilePicture: map["profile_picture"],
+        isAdmin: map["is_admin"],
+        token: map["token"]);
+  }
 }

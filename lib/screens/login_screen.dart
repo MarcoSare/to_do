@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
+import 'package:to_do/models/user_model.dart';
+import 'package:to_do/network/api_user.dart';
+import 'package:to_do/widgets/dialog_widget.dart';
 import 'package:to_do/widgets/email_field.dart';
 import 'package:to_do/widgets/pass_field.dart';
 
@@ -11,13 +14,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool loginFailed = false;
+  ApiUser apiUser = ApiUser();
   EmailField emailField = EmailField(
       label: "Email", hint: "Email", msgError: "Email or password wrong");
   PassField passField = PassField(
       label: "Password", hint: "Password", msgError: "Email or password wrong");
 
   bool isShow = false;
-  var controlerEmail;
+
   final btnGoogle = SocialLoginButton(
     buttonType: SocialLoginButtonType.google,
     text: "",
@@ -26,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     mode: SocialLoginButtonMode.single,
     onPressed: () {},
   );
+
   final btnApple = SocialLoginButton(
     buttonType: SocialLoginButtonType.apple,
     text: "",
@@ -34,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     borderRadius: 15,
     mode: SocialLoginButtonMode.single,
   );
+
   final btnFB = SocialLoginButton(
     buttonType: SocialLoginButtonType.facebook,
     text: "",
@@ -43,19 +50,73 @@ class _LoginScreenState extends State<LoginScreen> {
     onPressed: () {},
   );
 
-  final btnLogin = Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: SocialLoginButton(
-      buttonType: SocialLoginButtonType.generalLogin,
-      backgroundColor: Colors.purple,
-      onPressed: () {},
-      borderRadius: 15,
-    ),
-  );
+  bool validateForm() {
+    if (loginFailed) {
+      if (emailField.msgError == "Email or password wrong" &&
+          !emailField.formkey.currentState!.validate()) {
+        return true;
+      } else if (passField.msgError == "Email or password wrong" &&
+          !passField.formkey.currentState!.validate()) {
+        return true;
+      }
+    }
+    if (emailField.formkey.currentState!.validate()) {
+      if (passField.formkey.currentState!.validate()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    DialogWidget dialogWidget = DialogWidget(context: context);
+
+    Future<void> login() async {
+      final userModel = UserModel(
+          email: emailField.controlador, password: passField.controlador);
+      dialogWidget.showProgress();
+      var response = await apiUser.login(userModel);
+      dialogWidget.closeProgress();
+      if (!response.containsKey("Error")) {
+        //var data = response["data"] as List;
+        //final userModelLogin =
+        //data.map((item) => UserModel.fromMap(item)).toList();
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
+        //Navigator.pushNamed(context, "/home");
+      } else {
+        loginFailed = true;
+        if (response["Error"] == "Login failed") {
+          emailField.error = true;
+          emailField.formkey.currentState!.validate();
+          passField.error = true;
+          passField.formkey.currentState!.validate();
+        } else if (response["Error"] == "Tiempo de espera agotado") {
+          dialogWidget.showErrorDialog("Tiempo de espera agotado",
+              "Verifica tu conexión e intenta más tarde");
+        } else {
+          dialogWidget.showErrorDialog(
+              "Error inesperado", "Verifica tu conexión e intenta más tarde");
+        }
+      }
+    }
+
+    final btnLogin = Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SocialLoginButton(
+        buttonType: SocialLoginButtonType.generalLogin,
+        backgroundColor: Colors.purple,
+        onPressed: () {
+          if (validateForm()) {
+            login();
+          }
+        },
+        borderRadius: 15,
+      ),
+    );
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 21, 21, 21),
         body: Container(

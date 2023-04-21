@@ -1,6 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:to_do/models/user_model.dart';
 import 'package:to_do/network/api_user.dart';
@@ -9,7 +7,6 @@ import 'package:to_do/widgets/down_list_gender.dart';
 import 'package:to_do/widgets/email_field.dart';
 import 'package:to_do/widgets/pass_field.dart';
 import 'package:to_do/widgets/text_field.dart';
-import 'package:http/http.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -59,6 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     DialogWidget dialogWidget = DialogWidget(context: context);
+
     Future<void> registerUser() async {
       final userModel = UserModel(
         firstName: firstName.controlador,
@@ -89,15 +87,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
 
-    Future<void> prueba() async {
-      dialogWidget.showProgress();
-      await Future.delayed(const Duration(milliseconds: 5000));
-      dialogWidget.closeProgress();
-      // ignore: use_build_context_synchronously
-      dialogWidget.showSuccesDialog(
-          "Succesful register", "Se ha enviado un correo de confirmación");
-    }
-
     final btnRegister = Padding(
       padding: const EdgeInsets.all(8.0),
       child: SocialLoginButton(
@@ -119,67 +108,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
           padding: const EdgeInsets.all(20),
           width: double.infinity,
           child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                AbsorbPointer(
-                  absorbing: isLoading,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/logo.png",
-                          height: 100,
-                          width: 250,
-                          fit: BoxFit.cover,
-                        ),
-                        Image.asset(
-                          "assets/images/login_img.gif",
-                          height: 250,
-                          width: 250,
-                        ),
-                        const Text(
-                          "Create your account",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        firstName,
-                        lastName,
-                        emailField,
-                        passField,
-                        downListGender,
-                        btnRegister
-                      ]),
-                ),
-                isLoading
-                    ? Positioned.fill(
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              margin: const EdgeInsets.all(20),
-                              color: Colors.grey,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: const [
-                                  Text(
-                                    "Please wait",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  CircularProgressIndicator(
-                                    backgroundColor: Colors.black45,
-                                    color: Colors.purple,
-                                  ),
-                                ],
-                              ),
-                            )))
-                    : const SizedBox(),
-              ],
-            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/logo.png",
+                    height: 100,
+                    width: 250,
+                    fit: BoxFit.cover,
+                  ),
+                  Image.asset(
+                    "assets/images/login_img.gif",
+                    height: 250,
+                    width: 250,
+                  ),
+                  const Text(
+                    "Create your account",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  firstName,
+                  lastName,
+                  emailField,
+                  passField,
+                  downListGender,
+                  btnRegister
+                ]),
           ),
         ));
   }
