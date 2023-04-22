@@ -24,12 +24,12 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-        id: map["id"],
+        id: int.parse(map["id"]),
         firstName: map["first_name"],
         lastName: map["last_name"],
         email: map["email"],
         profilePicture: map["profile_picture"],
-        isAdmin: map["is_admin"],
+        isAdmin: int.parse(map["is_admin"]) == 1 ? true : false,
         token: map["token"]);
   }
 }

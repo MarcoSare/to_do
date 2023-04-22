@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:to_do/models/user_model.dart';
 import 'package:to_do/network/api_user.dart';
+import 'package:to_do/settings/preferences_user.dart';
 import 'package:to_do/widgets/dialog_widget.dart';
 import 'package:to_do/widgets/email_field.dart';
 import 'package:to_do/widgets/pass_field.dart';
@@ -16,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool loginFailed = false;
   ApiUser apiUser = ApiUser();
+  PreferencesUser preferencesUser = PreferencesUser();
   EmailField emailField = EmailField(
       label: "Email", hint: "Email", msgError: "Email or password wrong");
   PassField passField = PassField(
@@ -80,12 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
       var response = await apiUser.login(userModel);
       dialogWidget.closeProgress();
       if (!response.containsKey("Error")) {
-        //var data = response["data"] as List;
-        //final userModelLogin =
-        //data.map((item) => UserModel.fromMap(item)).toList();
+        var data = response["data"];
+        final userModelLogin = UserModel.fromMap(data);
+        await preferencesUser.setLogin(userModelLogin);
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
-        //Navigator.pushNamed(context, "/home");
       } else {
         loginFailed = true;
         if (response["Error"] == "Login failed") {

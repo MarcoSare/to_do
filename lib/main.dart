@@ -1,33 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/routes.dart';
+import 'package:to_do/screens/home_screen.dart';
 import 'package:to_do/screens/login_screen.dart';
+import 'package:to_do/settings/preferences_user.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  late Widget home;
 
-  // This widget is the root of your application.
+  Widget getHome(int? id) {
+    if (id == null) {
+      return const LoginScreen();
+    } else {
+      return const HomeScreen();
+    }
+  }
+
+  initData() async {
+    PreferencesUser preferencesUser = PreferencesUser();
+    int? id = await preferencesUser.getId();
+    home = getHome(id);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        routes: getAplicationRoutes(),
-        theme: ThemeData(
-          fontFamily: "PopPins",
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.red,
-        ),
-        home: const LoginScreen());
+    return FutureBuilder(
+        future: initData(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            case ConnectionState.done:
+              {
+                return MaterialApp(
+                    title: 'Flutter Demo',
+                    routes: getAplicationRoutes(),
+                    theme: ThemeData(
+                      fontFamily: "PopPins",
+                      primarySwatch: Colors.red,
+                    ),
+                    home: home);
+              }
+          }
+        });
   }
 }
