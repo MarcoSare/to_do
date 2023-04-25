@@ -25,25 +25,13 @@ class _PassFieldState extends State<PassField> {
         child: TextFormField(
           obscureText: !widget.isShow,
           inputFormatters: [LengthLimitingTextInputFormatter(50)],
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Theme.of(context).primaryColorLight),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.purple),
-                  borderRadius: BorderRadius.circular(20)),
-              errorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(20)),
-              focusedErrorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(20)),
               prefixIcon: Container(
                 margin: const EdgeInsets.only(left: 14, right: 14),
-                child: const Icon(
+                child: Icon(
                   Icons.lock,
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
               ),
               suffixIcon: Container(
@@ -51,7 +39,9 @@ class _PassFieldState extends State<PassField> {
                 child: IconButton(
                   icon: Icon(
                     widget.isShow ? Icons.visibility : Icons.visibility_off,
-                    color: widget.isShow ? Colors.purple : Colors.white,
+                    color: widget.isShow
+                        ? Colors.purple
+                        : Theme.of(context).primaryColorLight,
                   ),
                   onPressed: () {
                     setState(() {
@@ -60,8 +50,6 @@ class _PassFieldState extends State<PassField> {
                   },
                 ),
               ),
-              hintStyle: const TextStyle(color: Colors.white),
-              labelStyle: const TextStyle(color: Colors.white),
               hintText: widget.hint,
               labelText: widget.label),
           autovalidateMode: AutovalidateMode.onUserInteraction,

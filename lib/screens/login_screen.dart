@@ -119,37 +119,35 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 21, 21, 21),
         body: Container(
-          padding: const EdgeInsets.all(20),
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/images/logo.png",
-                    height: 100,
-                    width: 250,
-                    fit: BoxFit.cover,
-                  ),
-                  Image.asset(
-                    "assets/images/login_img.gif",
-                    height: 250,
-                    width: 250,
-                  ),
-                  const Text(
-                    "Login to your account",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  emailField,
-                  passField,
-                  /*SizedBox(
+      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      child: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/logo_dark.png",
+                height: 100,
+                width: 250,
+                fit: BoxFit.cover,
+              ),
+              Image.asset(
+                "assets/images/login_img.gif",
+                height: 250,
+                width: 250,
+              ),
+              Text(
+                "Login to your account",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Theme.of(context).primaryColorLight),
+              ),
+              emailField,
+              passField,
+              /*SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {},
@@ -158,38 +156,39 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text("Login"),
                     ),
                   ),*/
-                  btnLogin,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [btnGoogle, btnApple, btnFB],
+              btnLogin,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [btnGoogle, btnApple, btnFB],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Do you have an account?",
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Text(
-                        "Do you have an account?",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Expanded(
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, "/register");
-                            },
-                            child: const Text(
-                              "Create your account",
-                              style: TextStyle(color: Colors.purpleAccent),
-                            )),
-                      )
-                    ],
-                  ),
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "Forget your password?",
-                        style: TextStyle(color: Colors.purpleAccent),
-                      )),
-                ]),
-          ),
-        ));
+                  Expanded(
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/register");
+                        },
+                        child: const Text(
+                          "Create your account",
+                          style: TextStyle(color: Colors.purpleAccent),
+                        )),
+                  )
+                ],
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "Forget your password?",
+                    style: TextStyle(color: Colors.purpleAccent),
+                  )),
+            ]),
+      ),
+    ));
   }
 }

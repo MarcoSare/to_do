@@ -17,39 +17,23 @@ class _DownListGenderState extends State<DownListGender> {
       padding: const EdgeInsets.all(8.0),
       child: DropdownButtonFormField<String>(
         value: dropDownValue,
-        dropdownColor: Colors.black87,
+        dropdownColor: Colors.white70,
         icon: const Icon(Icons.expand_more),
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(20)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.purple),
-                borderRadius: BorderRadius.circular(20)),
-            errorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(20)),
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(20)),
             prefixIcon: Container(
               margin: const EdgeInsets.only(left: 14, right: 14),
-              child: const Icon(
+              child: Icon(
                 Icons.man,
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
             ),
-            hintStyle: const TextStyle(color: Colors.white),
-            labelStyle: const TextStyle(color: Colors.white),
             hintText: "Gender",
             labelText: "Gender"),
         items: genders.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(
-              value,
-              style: const TextStyle(color: Colors.white),
-            ),
+            child: Text(value,
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
           );
         }).toList(),
         onChanged: (String? newValue) {

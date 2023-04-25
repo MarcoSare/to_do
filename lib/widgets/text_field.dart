@@ -33,29 +33,13 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
             inputFormatters: [LengthLimitingTextInputFormatter(widget.lenght)],
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black87),
             decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.purple),
-                    borderRadius: BorderRadius.circular(20)),
-                errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(20)),
-                focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(20)),
                 prefixIcon: Container(
                   margin: const EdgeInsets.only(left: 14, right: 14),
-                  child: Icon(
-                    widget.icono,
-                    color: Colors.white,
-                  ),
+                  child: Icon(widget.icono,
+                      color: Theme.of(context).primaryColorLight),
                 ),
-                hintStyle: const TextStyle(color: Colors.white),
-                labelStyle: const TextStyle(color: Colors.white),
                 hintText: widget.hint,
                 labelText: widget.label),
             keyboardType: widget.inputType == 0

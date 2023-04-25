@@ -103,42 +103,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 21, 21, 21),
         body: Container(
-          padding: const EdgeInsets.all(20),
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/images/logo.png",
-                    height: 100,
-                    width: 250,
-                    fit: BoxFit.cover,
-                  ),
-                  Image.asset(
-                    "assets/images/login_img.gif",
-                    height: 250,
-                    width: 250,
-                  ),
-                  const Text(
-                    "Create your account",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  firstName,
-                  lastName,
-                  emailField,
-                  passField,
-                  downListGender,
-                  btnRegister
-                ]),
-          ),
-        ));
+      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      child: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/logo.png",
+                height: 100,
+                width: 250,
+                fit: BoxFit.cover,
+              ),
+              Image.asset(
+                "assets/images/login_img.gif",
+                height: 250,
+                width: 250,
+              ),
+              Text("Create your account",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Theme.of(context).primaryColorLight,
+                  )),
+              firstName,
+              lastName,
+              emailField,
+              passField,
+              downListGender,
+              btnRegister
+            ]),
+      ),
+    ));
   }
 }

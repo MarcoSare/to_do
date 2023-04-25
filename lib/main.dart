@@ -3,6 +3,7 @@ import 'package:to_do/routes.dart';
 import 'package:to_do/screens/home_screen.dart';
 import 'package:to_do/screens/login_screen.dart';
 import 'package:to_do/settings/preferences_user.dart';
+import 'package:to_do/settings/styles_settings.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,10 +46,7 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                     title: 'Flutter Demo',
                     routes: getAplicationRoutes(),
-                    theme: ThemeData(
-                      fontFamily: "PopPins",
-                      primarySwatch: Colors.red,
-                    ),
+                    theme: MyThemes.lightTheme,
                     home: home);
               }
           }
