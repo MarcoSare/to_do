@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:to_do/models/user_model.dart';
 import 'package:to_do/network/api_user.dart';
+import 'package:to_do/provider/theme_provider.dart';
+import 'package:to_do/settings/preferences_system.dart';
 import 'package:to_do/settings/preferences_user.dart';
 import 'package:to_do/widgets/dialog_widget.dart';
 import 'package:to_do/widgets/email_field.dart';
@@ -15,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  PreferencesSytem preferencesSytem = PreferencesSytem();
+  bool toogleTheme = false;
   bool loginFailed = false;
   ApiUser apiUser = ApiUser();
   PreferencesUser preferencesUser = PreferencesUser();
@@ -73,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     DialogWidget dialogWidget = DialogWidget(context: context);
 
     Future<void> login() async {
@@ -128,7 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/images/logo_dark.png",
+                Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
+                    ? "assets/images/logo_dark.png"
+                    : "assets/images/logo.png",
                 height: 100,
                 width: 250,
                 fit: BoxFit.cover,
@@ -138,24 +146,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 250,
                 width: 250,
               ),
-              Text(
-                "Login to your account",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Theme.of(context).primaryColorLight),
+              Row(
+                children: [
+                  Text(
+                    "Login to your account",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Theme.of(context).primaryColorLight),
+                  ),
+                  Switch.adaptive(
+                      value: themeProvider.isDarkMode,
+                      onChanged: (bool value) async {
+                        await preferencesSytem.setTheme(value);
+                        final provider =
+                            Provider.of<ThemeProvider>(context, listen: false);
+                        provider.toggleTheme(value);
+                      })
+                ],
               ),
               emailField,
               passField,
-              /*SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple),
-                      child: const Text("Login"),
-                    ),
-                  ),*/
               btnLogin,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
