@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   appBar: AppBar(
                     title: Text(
                       "Hola ${user.firstName!}",
-                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   drawer: Drawer(

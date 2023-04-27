@@ -25,24 +25,20 @@ class _PassFieldState extends State<PassField> {
         child: TextFormField(
           obscureText: !widget.isShow,
           inputFormatters: [LengthLimitingTextInputFormatter(50)],
-          style: TextStyle(color: Theme.of(context).primaryColorLight),
           decoration: InputDecoration(
               prefixIcon: Container(
-                margin: const EdgeInsets.only(left: 14, right: 14),
-                child: Icon(
-                  Icons.lock,
-                  color: Theme.of(context).primaryColorLight,
-                ),
-              ),
+                  margin: const EdgeInsets.only(left: 14, right: 14),
+                  child: const Icon(
+                    Icons.lock,
+                  )),
               suffixIcon: Container(
                 margin: const EdgeInsets.only(left: 14, right: 14),
                 child: IconButton(
                   icon: Icon(
-                    widget.isShow ? Icons.visibility : Icons.visibility_off,
-                    color: widget.isShow
-                        ? Colors.purple
-                        : Theme.of(context).primaryColorLight,
-                  ),
+                      widget.isShow ? Icons.visibility : Icons.visibility_off,
+                      color: widget.isShow
+                          ? Theme.of(context).colorScheme.primary
+                          : null),
                   onPressed: () {
                     setState(() {
                       widget.isShow = !widget.isShow;

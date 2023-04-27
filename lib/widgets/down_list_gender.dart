@@ -17,14 +17,13 @@ class _DownListGenderState extends State<DownListGender> {
       padding: const EdgeInsets.all(8.0),
       child: DropdownButtonFormField<String>(
         value: dropDownValue,
-        dropdownColor: Colors.white70,
+        dropdownColor: Theme.of(context).colorScheme.background,
         icon: const Icon(Icons.expand_more),
         decoration: InputDecoration(
             prefixIcon: Container(
               margin: const EdgeInsets.only(left: 14, right: 14),
-              child: Icon(
+              child: const Icon(
                 Icons.man,
-                color: Theme.of(context).primaryColorLight,
               ),
             ),
             hintText: "Gender",
@@ -32,8 +31,7 @@ class _DownListGenderState extends State<DownListGender> {
         items: genders.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(value,
-                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            child: Text(value),
           );
         }).toList(),
         onChanged: (String? newValue) {

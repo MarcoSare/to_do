@@ -4,6 +4,7 @@ import 'package:to_do/provider/theme_provider.dart';
 import 'package:to_do/routes.dart';
 import 'package:to_do/screens/home_screen.dart';
 import 'package:to_do/screens/login_screen.dart';
+import 'package:to_do/screens/regsiter.screen.dart';
 import 'package:to_do/settings/preferences_system.dart';
 import 'package:to_do/settings/preferences_user.dart';
 import 'package:to_do/settings/styles_settings.dart';

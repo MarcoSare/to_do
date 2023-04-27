@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:to_do/models/user_model.dart';
 import 'package:to_do/network/api_user.dart';
+import 'package:to_do/provider/theme_provider.dart';
 import 'package:to_do/widgets/dialog_widget.dart';
 import 'package:to_do/widgets/down_list_gender.dart';
 import 'package:to_do/widgets/email_field.dart';
@@ -91,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.all(8.0),
       child: SocialLoginButton(
         buttonType: SocialLoginButtonType.generalLogin,
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () {
           if (validateForm()) {
             registerUser();
@@ -104,37 +106,71 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
         body: Container(
-      padding: const EdgeInsets.all(20),
       width: double.infinity,
-      child: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/logo.png",
-                height: 100,
+      height: double.infinity,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            bottom: -90,
+            right: -90,
+            child: Transform.rotate(
+              angle: 270,
+              child: Image.asset(
+                "assets/images/graph.png",
+                height: 250,
                 width: 250,
                 fit: BoxFit.cover,
               ),
-              Image.asset(
-                "assets/images/login_img.gif",
+            ),
+          ),
+          Positioned(
+            top: -90,
+            left: -90,
+            child: Transform.rotate(
+              angle: 100,
+              child: Image.asset(
+                "assets/images/graph.png",
                 height: 250,
                 width: 250,
+                fit: BoxFit.cover,
               ),
-              Text("Create your account",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Theme.of(context).primaryColorLight,
-                  )),
-              firstName,
-              lastName,
-              emailField,
-              passField,
-              downListGender,
-              btnRegister
-            ]),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(25),
+            child: SingleChildScrollView(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Image.asset(
+                        Provider.of<ThemeProvider>(context).themeMode ==
+                                ThemeMode.dark
+                            ? "assets/images/logo_dark.png"
+                            : "assets/images/logo.png",
+                        height: 100,
+                        width: 250,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const Text("Create your account",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        )),
+                    firstName,
+                    lastName,
+                    emailField,
+                    passField,
+                    downListGender,
+                    btnRegister
+                  ]),
+            ),
+          ),
+        ],
       ),
     ));
   }

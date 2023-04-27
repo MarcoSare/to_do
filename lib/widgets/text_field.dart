@@ -33,12 +33,12 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
             inputFormatters: [LengthLimitingTextInputFormatter(widget.lenght)],
-            style: const TextStyle(color: Colors.black87),
             decoration: InputDecoration(
                 prefixIcon: Container(
                   margin: const EdgeInsets.only(left: 14, right: 14),
-                  child: Icon(widget.icono,
-                      color: Theme.of(context).primaryColorLight),
+                  child: Icon(
+                    widget.icono,
+                  ),
                 ),
                 hintText: widget.hint,
                 labelText: widget.label),

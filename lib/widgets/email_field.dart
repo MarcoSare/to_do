@@ -24,13 +24,11 @@ class _EmailFieldState extends State<EmailField> {
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
             inputFormatters: [LengthLimitingTextInputFormatter(50)],
-            style: TextStyle(color: Theme.of(context).primaryColorLight),
             decoration: InputDecoration(
                 prefixIcon: Container(
                   margin: const EdgeInsets.only(left: 14, right: 14),
-                  child: Icon(
+                  child: const Icon(
                     Icons.email,
-                    color: Theme.of(context).primaryColorLight,
                   ),
                 ),
                 hintText: widget.hint,
