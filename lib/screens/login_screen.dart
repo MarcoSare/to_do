@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:to_do/models/user_model.dart';
+import 'package:to_do/network/api_example.dart';
 import 'package:to_do/network/api_user.dart';
 import 'package:to_do/provider/theme_provider.dart';
 import 'package:to_do/responsive.dart';
@@ -20,6 +21,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   PreferencesSytem preferencesSytem = PreferencesSytem();
+  ApiExample apiExample = ApiExample();
   bool toogleTheme = false;
   bool loginFailed = false;
   ApiUser apiUser = ApiUser();
@@ -116,10 +118,13 @@ class _LoginScreenState extends State<LoginScreen> {
       child: SocialLoginButton(
         buttonType: SocialLoginButtonType.generalLogin,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        onPressed: () {
-          if (validateForm()) {
-            login();
-          }
+        onPressed: () async {
+          //if (validateForm()) {
+          //login();
+          //}
+          var data = await apiExample.getPokemons();
+          print("Ya se cumplió");
+          print(data);
         },
         borderRadius: 15,
       ),
