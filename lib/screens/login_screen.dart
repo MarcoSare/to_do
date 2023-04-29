@@ -125,16 +125,18 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
-    Widget formLogin = getFormLogin(themeProvider, btnLogin);
+    Widget formLogin = getFormLogin(themeProvider, btnLogin, false);
 
     return Scaffold(
         body: Responsive(
       desktop: desktopScreen(formLogin),
       mobile: formLogin,
+      tablet: getFormLogin(themeProvider, btnLogin, true),
     ));
   }
 
-  Widget getFormLogin(ThemeProvider themeProvider, Widget btnLogin) {
+  Widget getFormLogin(
+      ThemeProvider themeProvider, Widget btnLogin, bool isTablet) {
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -168,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(25),
+            padding: EdgeInsets.all(isTablet ? 100 : 25),
             child: SingleChildScrollView(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -214,19 +216,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [btnGoogle, btnApple, btnFB],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Do you have an account?",
-                          style: TextStyle(fontSize: 16),
+                        const Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Do you have an account?",
+                            style: TextStyle(fontSize: 16),
+                            textAlign: TextAlign.right,
+                          ),
                         ),
                         Expanded(
+                          flex: 1,
                           child: TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, "/register");
                               },
-                              child: const Text("Create your account",
-                                  style: TextStyle(fontSize: 16))),
+                              child: const Text(
+                                "Create your account",
+                                style: TextStyle(fontSize: 16),
+                                textAlign: TextAlign.left,
+                              )),
                         )
                       ],
                     ),
@@ -249,13 +259,93 @@ class _LoginScreenState extends State<LoginScreen> {
         Expanded(
             flex: 2,
             child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: Image.network(
-                "https://cdn2.hubspot.net/hubfs/5796582/4-smart-working.jpg",
-                fit: BoxFit.cover,
-              ),
-            )),
+                width: double.infinity,
+                height: double.infinity,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      bottom: -90,
+                      left: -90,
+                      child: Transform.rotate(
+                        angle: 180,
+                        child: Image.asset(
+                          "assets/images/graph.png",
+                          height: 250,
+                          width: 250,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: -90,
+                      right: -100,
+                      child: Transform.rotate(
+                        angle: 90,
+                        child: Image.asset(
+                          "assets/images/graph.png",
+                          height: 250,
+                          width: 250,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 50,
+                      right: 50,
+                      child: Image.asset(
+                        "assets/images/graph.png",
+                        height: 500,
+                        width: 500,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/img_login.png",
+                            height: 400,
+                            width: 500,
+                            fit: BoxFit.cover,
+                          ),
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(left: 100, right: 100, top: 15),
+                            child: Text(
+                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      "About us",
+                                      style: TextStyle(fontSize: 18),
+                                    )),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: const Text("FAQ's",
+                                        style: TextStyle(fontSize: 18))),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ))),
         Expanded(flex: 1, child: formLogin),
       ],
     );
