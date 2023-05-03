@@ -9,6 +9,8 @@ import 'package:to_do/settings/preferences_system.dart';
 import 'package:to_do/settings/preferences_user.dart';
 import 'package:to_do/settings/styles_settings.dart';
 
+import 'screens/on_boarding_screen.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
 
   Widget getHome(int? id) {
     if (id == null) {
-      return const LoginScreen();
+      return const OnBoardingScreen();
     } else {
       return const HomeScreen();
     }
