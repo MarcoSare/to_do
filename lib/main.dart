@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do/provider/theme_provider.dart';
 import 'package:to_do/routes.dart';
+import 'package:to_do/screens/edit_user_screen.dart';
 import 'package:to_do/screens/home_screen.dart';
 import 'package:to_do/screens/login_screen.dart';
 import 'package:to_do/screens/regsiter.screen.dart';
@@ -20,11 +21,19 @@ class MyApp extends StatelessWidget {
   late Widget home;
   bool? theme;
 
-  Widget getHome(int? id) {
-    if (id == null) {
+  Widget getHome(int? id, bool? isBoarding) {
+    if (isBoarding == null) {
       return const OnBoardingScreen();
     } else {
-      return const HomeScreen();
+      if (!isBoarding) {
+        return const OnBoardingScreen();
+      } else {
+        if (id == null) {
+          return const LoginScreen();
+        } else {
+          return const EditUserScreen(); //HomeScreen();
+        }
+      }
     }
   }
 
@@ -32,8 +41,9 @@ class MyApp extends StatelessWidget {
     PreferencesUser preferencesUser = PreferencesUser();
     PreferencesSytem preferencesSytem = PreferencesSytem();
     int? id = await preferencesUser.getId();
+    bool? isBoarding = await preferencesSytem.getBoarding();
     theme = await preferencesSytem.getTheme();
-    home = getHome(id);
+    home = getHome(id, isBoarding);
   }
 
   @override
@@ -57,6 +67,7 @@ class MyApp extends StatelessWidget {
                     builder: (context, child) {
                       final themeProvider = Provider.of<ThemeProvider>(context);
                       return MaterialApp(
+                          debugShowCheckedModeBanner: false,
                           title: 'Flutter Demo',
                           routes: getAplicationRoutes(),
                           theme: MyThemes.lightTheme,

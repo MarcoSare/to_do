@@ -38,6 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: Text(
                       "Hola ${user.firstName!}",
                     ),
+                    actions: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/editUser");
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 15),
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(user.profilePicture!)),
+                              shape: BoxShape.circle),
+                        ),
+                      )
+                    ],
                   ),
                   drawer: Drawer(
                     child: ListView(
@@ -45,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         UserAccountsDrawerHeader(
                           accountName: Text(
                             user.firstName!,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                           ),
                           accountEmail: Text(user.email!,
                               style: const TextStyle(color: Colors.black)),
@@ -72,6 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ],
                     ),
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () {},
+                    child: const Icon(Icons.add, size: 30),
                   ),
                 );
               }

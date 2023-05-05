@@ -1,5 +1,6 @@
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/material.dart';
+import 'package:to_do/settings/preferences_system.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -9,6 +10,7 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  PreferencesSytem preferencesSytem = PreferencesSytem();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +46,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ],
               );
             },
-            onFinish: () {
+            onFinish: () async {
+              await preferencesSytem.setBoarding(true);
               Navigator.pushNamed(context, "/login");
             }));
   }

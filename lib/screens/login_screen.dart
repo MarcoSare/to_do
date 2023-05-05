@@ -119,12 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
         buttonType: SocialLoginButtonType.generalLogin,
         backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () async {
-          //if (validateForm()) {
-          //login();
-          //}
-          var data = await apiExample.getPokemons();
-          print("Ya se cumplió");
-          print(data);
+          if (validateForm()) {
+            login();
+          }
         },
         borderRadius: 15,
       ),
@@ -175,7 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(isTablet ? 100 : 25),
+            padding: isTablet
+                ? const EdgeInsets.only(left: 100, right: 100)
+                : const EdgeInsets.all(25),
             child: SingleChildScrollView(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
