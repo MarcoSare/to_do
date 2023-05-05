@@ -9,7 +9,8 @@ class PassField extends StatefulWidget {
   bool error = false;
   bool isShow = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  PassField({super.key, this.label, this.hint, this.msgError});
+  PassField(
+      {super.key, this.label, this.hint, this.msgError, this.controlador});
 
   @override
   State<PassField> createState() => _PassFieldState();
@@ -23,6 +24,7 @@ class _PassFieldState extends State<PassField> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
+          initialValue: widget.controlador,
           obscureText: !widget.isShow,
           inputFormatters: [LengthLimitingTextInputFormatter(50)],
           decoration: InputDecoration(

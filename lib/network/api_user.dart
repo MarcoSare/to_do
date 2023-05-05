@@ -63,7 +63,7 @@ class ApiUser {
     }
   }
 
-  Future<Map<String, dynamic>> getUser() async {
+  Future<UserModel?> getUser() async {
     PreferencesUser preferencesUser = PreferencesUser();
     String? token = await preferencesUser.getToken();
     String url = "https://labmanufactura.net/marco/to-do-api/routes/user.php";
@@ -73,17 +73,17 @@ class ApiUser {
         HttpHeaders.contentTypeHeader: "application/json"
       }).timeout(const Duration(seconds: 30));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return json.decode(response.body);
+        final data = json.decode(response.body)["data"];
+        UserModel userModel = UserModel.fromMap(data);
+        return userModel;
       } else {
         var respError = json.decode(response.body);
-        return {"Error": respError["message"], "code": respError["code"]};
+        return null;
       }
     } on TimeoutException catch (e) {
-      return {"Error": "Tiempo de espera agotado"};
+      return null;
     } on Exception catch (e) {
-      return {
-        "Error": "Error inesperado",
-      };
+      return null;
     }
   }
 }

@@ -9,7 +9,8 @@ class EmailField extends StatefulWidget {
   var controlador;
   bool error = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  EmailField({super.key, this.label, this.hint, this.msgError});
+  EmailField(
+      {super.key, this.label, this.hint, this.msgError, this.controlador});
 
   @override
   State<EmailField> createState() => _EmailFieldState();
@@ -23,6 +24,7 @@ class _EmailFieldState extends State<EmailField> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            initialValue: widget.controlador,
             inputFormatters: [LengthLimitingTextInputFormatter(50)],
             decoration: InputDecoration(
                 prefixIcon: Container(

@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
 class DownListGender extends StatefulWidget {
-  DownListGender({super.key});
-  String? control = "male";
+  DownListGender({super.key, required this.control});
+  String control;
 
   @override
   State<DownListGender> createState() => _DownListGenderState();
 }
 
 class _DownListGenderState extends State<DownListGender> {
-  List<String> genders = ["male", "female", "Other"];
-  String dropDownValue = "male";
+  @override
+  initState() {
+    dropDownValue = widget.control;
+  }
+
+  List<String> genders = ["male", "female", "other"];
+  late String dropDownValue;
   @override
   Widget build(BuildContext context) {
     return Container(

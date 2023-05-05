@@ -28,6 +28,7 @@ class UserModel {
         firstName: map["first_name"],
         lastName: map["last_name"],
         email: map["email"],
+        gender: map["gender"],
         profilePicture: map["profile_picture"],
         isAdmin: int.parse(map["is_admin"]) == 1 ? true : false,
         token: map["token"]);

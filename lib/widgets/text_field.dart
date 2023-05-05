@@ -18,7 +18,8 @@ class TextFieldWidget extends StatefulWidget {
       this.msgError,
       this.inputType,
       this.lenght,
-      this.icono});
+      this.icono,
+      this.controlador});
 
   @override
   State<TextFieldWidget> createState() => _TextFieldWidgetState();
@@ -32,6 +33,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            initialValue: widget.controlador,
             inputFormatters: [LengthLimitingTextInputFormatter(widget.lenght)],
             decoration: InputDecoration(
                 prefixIcon: Container(

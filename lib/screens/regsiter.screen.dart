@@ -41,7 +41,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       label: "Email", hint: "Email", msgError: "Email or password wrong");
   PassField passField = PassField(
       label: "Password", hint: "Password", msgError: "Email or password wrong");
-  DownListGender downListGender = DownListGender();
+  DownListGender downListGender = DownListGender(
+    control: "male",
+  );
 
   bool validateForm() {
     if (firstName.formkey.currentState!.validate()) {
@@ -66,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         lastName: lastName.controlador,
         email: emailField.controlador,
         password: passField.controlador,
-        gender: downListGender.control!,
+        gender: downListGender.control,
       );
       dialogWidget.showProgress();
       var response = await apiUser.register(userModel);
